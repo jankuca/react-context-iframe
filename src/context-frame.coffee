@@ -57,9 +57,10 @@ class ContextFrame extends React.Component
       # 2A. Remove untouched keys from the diff.
       if diff[contextKey]
         delete diff[contextKey]
+        return false
+
       # 2B. Stop on a missing key.
-      else
-        return true
+      return true
 
     # 3. Whether a new key was added or at least one key was removed.
     return addedContextKey or (Object.keys(diff).length > 1)
