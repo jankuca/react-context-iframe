@@ -1,6 +1,6 @@
 {
   "name": "react-context-iframe",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "./lib/context-frame.js",
   "scripts": {
     "build": "rm -rf lib; coffee -c -o lib src",
