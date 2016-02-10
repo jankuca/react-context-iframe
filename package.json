@@ -7,7 +7,7 @@
     "prepublish": "npm run build"
   },
   "dependencies": {
-    "react-css-iframe": "vojtatranta/react-css-iframe#2d913d21a51d87b1e3d4178d39a5bcea8fe8c860"
+    "react-css-iframe": "vojtatranta/react-css-iframe#00d3fc3b712abf0e608a8c567266f5d7cb14a62b"
   },
   "devDependencies": {
     "coffee-script": "1.10.x"
