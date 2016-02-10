@@ -30,10 +30,10 @@ class ContextFrame extends React.Component
     contextKeys = Object.keys(internalContext).filter (key) -> (key[0] != '_')
     contextKeys.sort()
 
-    if not @_shouldUpdateContextProvider(@state?.ContextProvider, contextKeys)
+    context = @_createContext(internalContext, contextKeys)
+    if not @_shouldUpdateContextProvider(@state?.ContextProvider, context)
       return @state.ContextProvider
 
-    context = @_createContext(internalContext, contextKeys)
     contextTypes = @_createContextTypes(contextKeys)
 
     class ContextProvider extends AbstractContextProvider
@@ -42,28 +42,21 @@ class ContextFrame extends React.Component
 
     return ContextProvider
 
-  _shouldUpdateContextProvider: (prevContextProvider, nextContextKeys) ->
-    prevContextTypes = prevContextProvider?.childContextTypes
-    if !prevContextTypes
+  _shouldUpdateContextProvider: (prevContextProvider, nextContext) ->
+    prevContext = prevContextProvider?::getChildContext()
+    if !prevContext
       return true
 
-    # NOTE: Object key comparison algorithm.
-    # 1. Start with a copy of the object the keys of which are being compared.
-    diff = {}
-    Object.keys(prevContextTypes).forEach (key) ->
-      diff[key] = prevContextTypes[key]
+    nextContextKeys = Object.keys(nextContext)
+    removedKey = Object.keys(prevContext).some (key) ->
+      index = nextContextKeys.indexOf(key)
+      if index != -1
+        nextContextKeys.splice(index, -1)
+        return (prevContext[key] != nextContext[key])
 
-    addedContextKey = nextContextKeys.some (contextKey) ->
-      # 2A. Remove untouched keys from the diff.
-      if diff[contextKey]
-        delete diff[contextKey]
-        return false
-
-      # 2B. Stop on a missing key.
       return true
 
-    # 3. Whether a new key was added or at least one key was removed.
-    return addedContextKey or (Object.keys(diff).length > 1)
+    return removedKey or nextContextKeys.length > 0
 
   _createContextTypes: (contextKeys) ->
     contextTypeReducer = (contextTypes, value) ->
