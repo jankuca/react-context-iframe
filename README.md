@@ -1,6 +1,6 @@
 # React Context iFrame
 
-Creates a *CSS frame component* ([react-css-iframe](vojtatranta/react-css-iframe)) which preserves the whole React context of its parent.
+Creates a *CSS frame component* ([react-css-iframe](https://github.com/jankuca/react-css-iframe)) which preserves the whole React context of its parent.
 
 ```javascript
 import ContextFrame from 'react-context-iframe'
